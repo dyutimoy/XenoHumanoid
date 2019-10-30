@@ -13,7 +13,7 @@ def cosine_rule(l_1,l_2,l_3):
 	
 	theta=math.acos((l_1**2 + l_2**2-l_3**2)/(2*l_1*l_2))
 	return round(theta,4)
-
+	
 def distance(p1,p2):
 	return np.linalg.norm(p1-p2)
 
@@ -219,10 +219,7 @@ def inverse_kinematics(chain, target_frame, starting_nodes_angles):
 							if(count>90):
 								flag=0
 
-			
 
-
-			
 			except:
 				print("theta val not defined case 1,2 theta3")
 				return theta_all			

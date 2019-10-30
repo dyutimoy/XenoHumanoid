@@ -12,7 +12,7 @@ import geometry_utils
 import numpy as np
 
 import math
-
+import random
 resources="../resources/10-armchain.urdf"
 
 
@@ -37,33 +37,34 @@ target=[0.424, 0.624 ,0.0]
 All_sol=ik_rightarm.inverse_kinematics(Arm,target_frame,starting_angles_nodes)
 print(All_sol)
 #check using forward kinematics
-"""
-opt_theta=[0,0,0,0,0,0,0]
-max_disp=999999999
-for i in range(All_sol.shape[0]):
-	flag=0
 
-	for  j in range(4):
-		if All_sol[i,j]<-50  :
-			flag=1
+for i in range(1000):
+	
+	theta1=random.randrange(-135,45,0)
+	theta2=random.randrange(-90,90,0)
+	theta3=random.randrange(-90,0,0)
+	theta4=random.randrange(0,180,1)
 
-	print(flag,i)		
-	if flag==0:
-		angle_vals=[0,All_sol[i,0],All_sol[i,1],All_sol[i,2],0,All_sol[i,3],0]
-		transformation_matrix = Arm.forward_kinematics(angle_vals, full_kinematics=False)	
-		print(transformation_matrix)
-		#(node, rotation) = geometry_utils.from_transformation_matrix(transformation_matrix)
 
-		if(ik_leftarm.distance(transformation_matrix,target_frame)<0.01 and ik_leftarm.distance(transformation_matrix,target)<max_disp):
-			print(np.around(transformation_matrix,decimals=2),";;aaaaaaaaa;;;",np.around(target,decimals=2))
-			max_disp=ik_leftarm.distance(transformation_matrix,target)
-			print(max_disp)
-			opt_theta=angle_vals
+	print(theta1,theta2,theta3,theta4)
 
-if max_disp !=999999999:
-	Arm.plot(opt_theta,ax=None,target=target_frame[:3,3],show=True)
+	starting_angles_nodes=[0,theta1*(np.pi/180.0),theta2*(np.pi/180.0),theta2*(np.pi/180.0),0, theta2*(np.pi/180.0) ,0]
+	target_frame = Arm.forward_kinematics(starting_angles_nodes, full_kinematics=False)
 
-else:
-	print("no sol")	
+	All_sol=ik_rightarm.inverse_kinematics(Arm,target_frame,starting_angles_nodes)
+	
+	for j in range(All_sol.shape[0]):
+		flag=0		
+		for k in range(4):
+			if(All_sol[j,k]<-50):
+				flag=1
 
-"""
+		if(flag==1):
+			result_angles=[0,All_sol[j,0],All_sol[j,1],All_sol[j,2],0, All_sol[j,3] ,0]
+			target_frame = Arm.forward_kinematics(starting_angles_nodes, full_kinematics=False)
+			
+			
+			
+			
+
+	
