@@ -1,8 +1,0 @@
-prefix=/home/xenocrypt/Documents/Humanoid/codes/ws_moveit/install
-
-Name: panda_moveit_config
-Description: Description of panda_moveit_config
-Version: 0.7.2
-Cflags: 
-Libs: -L/home/xenocrypt/Documents/Humanoid/codes/ws_moveit/install/lib 
-Requires: 
