@@ -1,0 +1,8 @@
+prefix=/home/xenocrypt/Documents/Humanoid/codes/humanoid_ws/install
+
+Name: urdf_tutorial
+Description: Description of urdf_tutorial
+Version: 0.4.0
+Cflags: 
+Libs: -L/home/xenocrypt/Documents/Humanoid/codes/humanoid_ws/install/lib 
+Requires: 

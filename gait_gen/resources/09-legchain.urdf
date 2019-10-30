@@ -1,0 +1,333 @@
+<?xml version="1.0"?>
+<robot name="legchain">
+
+<material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+  <material name="orange">
+    <color rgba="0.8 0.2 0 1"/>
+  </material>
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.6 0.6 0.2"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <link name="Lpitch_ankle">
+    <visual>
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+  <joint name="base_to_right_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 3.1415" xyz="-0.5 0 0"/>
+    <parent link="base_link"/>
+    <child link="Lpitch_ankle"/>
+  </joint>
+
+
+  <link name="Lroll_ankle">
+    <visual>
+      <geometry>
+        <cylinder length="0.8" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 1.5707 0" xyz="-0.4 0 0"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+  <joint name="Lpitch_to_roll_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 -1.5707" xyz="0 0 0"/>
+    <parent link="Lpitch_ankle"/>
+    <child link="Lroll_ankle"/>
+  </joint>
+
+  <link name="Lpitch_knee">
+    <visual>
+      <geometry>
+        <cylinder length="0.4" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+  </link>
+  <joint name="Lankle_to_knee_pitch_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 3.1415" xyz="-0.8 0 0"/>
+    <parent link="Lroll_ankle"/>
+    <child link="Lpitch_knee"/>
+  </joint>
+
+
+  <link name="Lthigh">
+    <visual>
+      <geometry>
+        <cylinder length="0.8" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 1.5707 0" xyz="-0.4 0 0"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+  <joint name="rknee_to_thigh_leg" type="fixed">
+    <origin rpy="0 0 0" xyz="0.8 0 0"/>
+    <parent link="Lpitch_knee"/>
+    <child link="Lthigh"/>
+  </joint>
+
+  <link name="Lpitch_hip">
+    <visual>
+      <geometry>
+        <cylinder length="0.4" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+  </link>
+  <joint name="Lthigh_to_hip_pitch_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="Lthigh"/>
+    <child link="Lpitch_hip"/>
+  </joint>
+
+
+  <link name="Lroll_hip">
+    <visual>
+      <geometry>
+        <box size="0.2 0.8 0.6"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 -0.4 -0.3"/>
+      <material name="white"/>
+    </visual>
+  </link>
+  <joint name="Lpitch_to_hip_roll_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 3.1415" xyz="0 0 0"/>
+    <parent link="Lpitch_hip"/>
+    <child link="Lroll_hip"/>
+  </joint>
+
+
+  <link name="yaw_hip">
+    <visual>
+      <geometry>
+        <cylinder length="0.2" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="green"/>
+    </visual>
+  </link>
+  <joint name="roll_to_hip_yaw_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 -1.5707" xyz="0 -0.8 -0.3"/>
+    <parent link="Lroll_hip"/>
+    <child link="yaw_hip"/>
+  </joint>
+
+
+  <link name="Rfixed_hip">
+    <visual>
+      <geometry>
+        <box size="0.8 0.6 0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+  <joint name="Lyaw_to_hip_fixed_leg" type="fixed">
+    <origin rpy="0 0 0" xyz="0.4 0 0"/>
+    <parent link="yaw_hip"/>
+    <child link="Rfixed_hip"/>
+  </joint>
+
+  <link name="Rroll_hip"/>
+  <joint name="Ryaw_to_hip_roll_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 3.1415" xyz="0.4 0.3 0"/>
+    <parent link="Rfixed_hip"/>
+    <child link="Rroll_hip"/>
+  </joint>
+
+
+  <link name="Rpitch_hip">
+    <visual>
+      <geometry>
+        <cylinder length="0.4" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+  </link>
+  <joint name="Rroll_to_hip_pitch_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 -1.5707" xyz="0 0 0"/>
+    <parent link="Rroll_hip"/>
+    <child link="Rpitch_hip"/>
+  </joint>
+
+
+  <link name="Rthigh">
+    <visual>
+      <geometry>
+        <cylinder length="0.8" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 1.5707 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+  <joint name="Rpitch_to_thigh_leg" type="fixed">
+    <origin rpy="0 0 0" xyz="0.4 0 0"/>
+    <parent link="Rpitch_hip"/>
+    <child link="Rthigh"/>
+  </joint>
+
+  <link name="Rpitch_knee">
+    <visual>
+      <geometry>
+        <cylinder length="0.4" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+  </link>
+  <joint name="Rthigh_to_knee_pitch_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0.4 0 0"/>
+    <parent link="Rthigh"/>
+    <child link="Rpitch_knee"/>
+  </joint>
+
+
+  <link name="Rcalf">
+    <visual>
+      <geometry>
+        <cylinder length="0.8" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 1.5707 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+  <joint name="Rpitch_to_calf_leg" type="fixed">
+    <origin rpy="0 0 0" xyz="0.4 0 0"/>
+    <parent link="Rpitch_knee"/>
+    <child link="Rcalf"/>
+  </joint>
+
+
+  <link name="Rroll_ankle"/>
+  <joint name="Rcalf_to_ankle_roll_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="1.5707 0 3.1415" xyz="0.4 0 0"/>
+    <parent link="Rcalf"/>
+    <child link="Rroll_ankle"/>
+  </joint>
+
+  <link name="Rpitch_ankle">
+    <visual>
+      <geometry>
+        <cylinder length="0.4" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+  <joint name="Rroll_to_ankle_pitch_leg" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy=" 1.5707 0 3.1415" xyz="0 0 0"/>
+    <parent link="Rroll_ankle"/>
+    <child link="Rpitch_ankle"/>
+  </joint>
+
+  <link name="Rfoot">
+    <visual>
+      <geometry>
+        <box size="0.2 0.6 0.6"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+  <joint name="Rpitch_to_foot_leg" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.5 0"/>
+    <parent link="Rpitch_ankle"/>
+    <child link="Rfoot"/>
+  </joint>
+
+
+
+</robot>
+
+
+
+
+
+
+
+
+  <link name="pitch_right_elbow"/>
+   <joint name="pitch_right_elbow" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/> 
+    <origin rpy="1.5707 0 3.1415" xyz="0 0 0"/>
+    <parent link="roll_right_elbow"/>
+    <child link="pitch_right_elbow"/>
+  </joint>
+
+
+  <link name="right_arm">
+    <visual>
+      <geometry>
+        <cylinder length="1.2" radius="0.2"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <joint name="right_arm" type="fixed">
+    <origin rpy="0 -1.5707 0" xyz="0.6 0 0"/>
+    <parent link="pitch_right_elbow"/>
+    <child link="right_arm"/>
+  </joint>
+
+
+
+
+
+
+
+<link name="pitch_right_wrist">
+  <joint name="pitch_right_wrist" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/> 
+    <origin rpy="1.5707 0 3.1415" xyz="0.6 0 0"/>
+    <parent link="yaw_right_wrist"/>
+    <child link="pitch_right_wrist"/>
+  </joint>
