@@ -138,7 +138,7 @@ for i in range(10):
 
                 fig = plt.figure()
 
-                
+                """
                 ax = fig.add_subplot(111, projection='3d')
                 ax.view_init(azim=-90, elev=0)
                 ax = plt.axes(projection='3d')

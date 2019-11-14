@@ -38,27 +38,28 @@ def inverse_kinematics(chain, target_frame, starting_nodes_angles):
 	#print(l2)
 
 	theta_all=np.ones((2,4))*-100
-	print(l0,l1,l2)
+	#print(l0,l1,l2)
+	#print("starting_nodes_angles",starting_nodes_angles)
 
 	#theta4
 	a6=chain.links[6].get_transformation_matrix(0)[:3,3]
 	#print(a6)
 	l3=distance(target,a1)	
-	print("hhi")
+	#print("hhi")
 	try:	
 
 		theta4_=cosine_rule(l1,l2,l3)
 		#As theta4 can take only postive values,theta4=3.1415-theta4_
-		print("theta4_",theta4_)
+		#print("theta4_",theta4_)
 		theta4=3.1416-theta4_
 		print("theta4",theta4)
 		#theta2
-		for i in range(4):
+		for i in range(2):
 			theta_all[i,3]=theta4
-		print(np.round(theta_all,decimals=3))	
+		#print(np.round(theta_all,decimals=3))	
 		try:	
-			print("Ssd")
-			print(target_frame[1,3],l0,l2,target_frame[1,1],l1)
+			#print("Ssd")
+			#print(target_frame[1,3],l0,l2,target_frame[1,1],l1)
 			theta2=math.asin((target_frame[1,3]+l0-l2*target_frame[1,1])/(l1))
 			print(theta2)
 
@@ -70,7 +71,7 @@ def inverse_kinematics(chain, target_frame, starting_nodes_angles):
 			try:
 				if(abs(math.cos(theta2))>0.001):
 					theta3=math.acos(-target_orient[1,2]/math.cos(theta2))
-					print("theta3",theta3)
+					print("theta3",-theta3)
 					if theta3<=np.pi/2:
 						theta3=-theta3
 						theta_all[0,2]=theta3
@@ -80,20 +81,26 @@ def inverse_kinematics(chain, target_frame, starting_nodes_angles):
 						try:
 							if((abs(math.sin(theta2))<0.0001 or abs(math.cos(theta3))<0.0001) and abs(math.sin(theta3))>0.0001):
 								theta1=math.asin (target_frame[2,2]/math.sin(theta3))
+								print("1")
 							elif(abs(math.sin(theta2))>0.0001  and abs(math.sin(theta3))<0.0001):
 								theta1=math.asin(-target_frame[0,2]/(math.sin(theta2)))
+								print("2")
 							elif(abs(math.sin(theta2))<0.0001  and abs(math.sin(theta3))<0.0001 and abs(theta4-np.pi/4)>0.001):
-								theta1=math.asin(-target_frame[0,0]/(math.cos(theta4)+math.sin(theta4)))									
+								theta1=math.asin(-target_frame[0,0]/(math.cos(theta4)+math.sin(theta4)))	
+								print("3")								
 							elif(abs(math.sin(theta2))<0.0001  and abs(math.sin(theta3))<0.0001 and abs(theta4-np.pi/4)>0.001):
 								theta1=math.asin(-target_frame[0,1]*math.cos(theta4)-target_frame[2,1]*math.sin(theta4))
-							elif((target_frame[2,2]*math.sin(theta3)-target_frame[0,2]*math.sin(theta2)*math.cos(theta3))< 0.0001):
+								print("4")
+							elif(abs(target_frame[2,2]*math.sin(theta3)-target_frame[0,2]*math.sin(theta2)*math.cos(theta3))< 0.0001):
 								theta1=math.asin(0)
+								print("5")
 
 							else:
 								theta1=math.asin((target_frame[2,2]*math.sin(theta3)-target_frame[0,2]*math.sin(theta2)*math.cos(theta3))/(math.sin(theta3)**2+(math.sin(theta2)*math.cos(theta3))**2))
-								print("theta1",theta1)
+								print("6",target_frame[2,2]*math.sin(theta3)-target_frame[0,2]*math.sin(theta2)*math.cos(theta3),(math.sin(theta3)**2+(math.sin(theta2)*math.cos(theta3))**2))
+							print("theta1",theta1)
 								
-							if theta1>=-np.pi/2 and theta1<=np.pi/4:
+							if (-np.pi/2<=theta1 and theta1<=np.pi/4):
 								theta_all[0,0]=theta1
 							if(theta1<=-np.pi/4):
 								theta_all[1,0]=-np.pi-theta1
